@@ -9,38 +9,77 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // GET all departments
-// db.query(`SELECT * FROM department`, (err, rows) => {
-//   console.log(rows);
-// });
+app.get('/api/departments', (err, res) => {
+    const sql = `SELECT * FROM department`;
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'Success',
+            data: rows
+        });
+    });
+});
 
 // GET a SINGLE department
-// db.query(`SELECT * FROM department WHERE id = 1`, (err, row) => {
-//     if (err) {
-//         console.log(err);
-//     }
-//     console.log(row);
-// });
+app.get('/api/department/:id', (req, res) => {
+    const sql = `SELECT * FROM department WHERE id = ?`;
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, row) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'Success',
+            data: row
+        });
+    });
+});
 
 // DELETE a SINGLE department
-// db.query(`DELETE FROM department WHERE ID = ?`, 1, (err, result) => {
-//     if (err) {
-//         console.log(err);
-//     }
-//     console.log(result);
-// });
+app.delete('/api/department/:id', (req, res) => {
+    const sql = `DELETE FROM department WHERE id = ?`;
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.statusMessage(400).json({ error: res.message });
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Department not found!'
+            });
+        } else {
+            res.json({
+                message: 'Department Successfully Deleted', 
+                changes: result.affectedRows,
+                id: req.params.id
+            });
+        }
+    });
+});
 
 // CREATE a SINGLE department
-// const sql = (`INSERT INTO department (id, department_name)
-//             VALUES (?, ?)`);
+app.post('/api/department', ({ body }, res) => {
+    const sql = `INSERT INTO department (department_name) 
+    VALUES (?)`;
+    const params = [body.department_name];
 
-// const params = [1,'Executive Leadership Team'];
-
-// db.query(sql, params, (err, result) => {
-//     if (err) {
-//         console.log(err);
-//     }
-//     console.log(result);
-// });
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: error.message });
+            return;
+        }
+        res.json({
+            message: 'Department created successfully!',
+            data: body
+        });
+    });
+});
 
 
 // Default response for any other request (Not Found)
