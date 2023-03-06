@@ -4,7 +4,8 @@
   "description": "Updates coming soon",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/MNlegion/Employee-Tracker/issues"
   },
-  "homepage": "https://github.com/MNlegion/Employee-Tracker#readme"
+  "homepage": "https://github.com/MNlegion/Employee-Tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "express": "^4.18.2",
+    "inquirer": "^9.1.4",
+    "mysql2": "^3.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.4.3"
+  }
 }
