@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
+const db = require('./config/connection');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
@@ -9,17 +10,12 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Connect to MySQL DATABASE
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        user: process.env.DB_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.DB_NAME
-    },
-    console.log('Successfully connected to the ')
-);
 
+
+
+db.query(`SELECT * FROM department`, (err, rows) => {
+    console.log(rows);
+});
 
   // Default response for any other request (Not Found)
 app.use((req, res) => {
